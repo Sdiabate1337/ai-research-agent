@@ -21,6 +21,7 @@ class RepositoryResult(TypedDict):
     stars: int
     last_updated: str
 
+
 class DocumentationResult(TypedDict):
     name: str
     url: str
@@ -28,19 +29,22 @@ class DocumentationResult(TypedDict):
     description: str
     language: str
 
+
 class DiscussionResult(TypedDict):
     title: str
     url: str
     source: str  # "reddit", "hackernews", "twitter"
     author: str
     comment_count: str
-    date: str   
+    date: str
+
 
 class CategorySummary(TypedDict):
     papers: str
     repositories: str
     documentation: str
-    discussions: str     
+    discussions: str
+
 
 class RankedResult(TypedDict):
     source_type: str  # "paper", "repository", etc.
@@ -50,24 +54,26 @@ class RankedResult(TypedDict):
     published_date: str
     summary: str
 
+
 class Insight(TypedDict):
     text: str
     confidence: float
-    related_sources: List[str]    
+    related_sources: List[str]
+
 
 class Action(TypedDict):
     text: str
+
 
 class SearchError(TypedDict):
     """Track errors during search operations."""
     source: str  # Which search failed?
     error_message: str
-    timestamp: str    
+    timestamp: str
 
 
 class AgentState(TypedDict):
-
-   """
+    """
     State schema for the research agent workflow.
     
     Attributes:
@@ -86,15 +92,15 @@ class AgentState(TypedDict):
         total_results_found: Count of all results across sources
         search_errors: Any errors encountered during search
     """
-
+    
     # === INPUT FIELDS (always present) ===
     query: str
     search_categories: Optional[List[str]]  # ["papers", "code", "docs", "news"]
     date_range: str  # "24h", "week", "month"
-    topic_filters: Optional[List[str]] # ["langgraph", "memory", "tools"]
+    topic_filters: Optional[List[str]]  # ["langgraph", "memory", "tools"]
     
     # === RAW RESULTS (replaced on each search) ===
-    papers: List[PaperResult]  # NOT List[dict]!
+    papers: List[PaperResult]
     repositories: List[RepositoryResult]
     documentation: List[DocumentationResult]
     discussions: List[DiscussionResult]
@@ -103,9 +109,8 @@ class AgentState(TypedDict):
     ranked_results: Optional[List[RankedResult]]
     summary_by_category: Optional[CategorySummary]
     key_insights: Optional[List[Insight]]
-    action_items: Optional[List[Action]]  # "Read paper X", "Try tool Y"
-
+    action_items: Optional[List[Action]]
+    
     # === METADATA ===
     total_results_found: Optional[int]
     search_errors: Optional[List[SearchError]]
-
