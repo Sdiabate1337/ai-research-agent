@@ -1,75 +1,19 @@
 """State schema for the AI research agent graph."""
 
 from typing import TypedDict, List, Optional
-
-class PaperResult(TypedDict):
-    title: str
-    authors: List[str]
-    url: str
-    abstract: str
-    published_date: str
-    arxiv_id: str
-    category: List[str]
-
-
-class RepositoryResult(TypedDict):
-    name: str
-    url: str
-    description: str
-    author: str
-    contributors_count: int
-    stars: int
-    last_updated: str
-
-
-class DocumentationResult(TypedDict):
-    name: str
-    url: str
-    sources: str
-    description: str
-    language: str
-
-
-class DiscussionResult(TypedDict):
-    title: str
-    url: str
-    source: str  # "reddit", "hackernews", "twitter"
-    author: str
-    comment_count: str
-    date: str
-
-
-class CategorySummary(TypedDict):
-    papers: str
-    repositories: str
-    documentation: str
-    discussions: str
-
-
-class RankedResult(TypedDict):
-    source_type: str  # "paper", "repository", etc.
-    title: str
-    url: str
-    confidence_score: float
-    published_date: str
-    summary: str
-
-
-class Insight(TypedDict):
-    text: str
-    confidence: float
-    related_sources: List[str]
-
-
-class Action(TypedDict):
-    text: str
-
-
-class SearchError(TypedDict):
-    """Track errors during search operations."""
-    source: str  # Which search failed?
-    error_message: str
-    timestamp: str
+from typing_extensions import Annotated
+import operator
+from models import (
+    PaperResult,
+    RepositoryResult,
+    DocumentationResult,
+    DiscussionResult,
+    RankedResult,
+    CategorySummary,
+    Insight,
+    Action,
+    SearchError
+)
 
 
 class AgentState(TypedDict):
@@ -91,6 +35,15 @@ class AgentState(TypedDict):
         
         total_results_found: Count of all results across sources
         search_errors: Any errors encountered during search
+        
+        Query Analyzer Metadata (NEW):
+        query_normalized: Normalized version of query
+        query_language: Detected language code (en, fr, ar)
+        query_processing_time_ms: Time taken to analyze query
+        query_cache_hit: Whether result came from cache
+        query_confidence_score: Confidence in analysis (0-1)
+        llm_tokens_used: Total LLM tokens consumed
+        llm_cost_usd: Estimated cost in USD
     """
     
     # === INPUT FIELDS (always present) ===
@@ -111,6 +64,17 @@ class AgentState(TypedDict):
     key_insights: Optional[List[Insight]]
     action_items: Optional[List[Action]]
     
-    # === METADATA ===
+    # === OUTPUT FIELDS (updated during workflow) ===
     total_results_found: Optional[int]
-    search_errors: Optional[List[SearchError]]
+    
+    # Using typing.Annotated with operator.add to combine lists from parallel nodes
+    search_errors: Annotated[Optional[List[SearchError]], operator.add]
+    
+    # === QUERY ANALYZER METADATA (NEW) ===
+    query_normalized: Optional[str]
+    query_language: Optional[str]  # "en", "fr", "ar"
+    query_processing_time_ms: Optional[int]
+    query_cache_hit: Optional[bool]
+    query_confidence_score: Optional[float]
+    llm_tokens_used: Optional[int]
+    llm_cost_usd: Optional[float]

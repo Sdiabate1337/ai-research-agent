@@ -1,0 +1,21 @@
+# HELP query_analyzer_total_queries Total number of queries processed
+# TYPE query_analyzer_total_queries counter
+query_analyzer_total_queries 3
+# HELP query_analyzer_success_rate Query success rate
+# TYPE query_analyzer_success_rate gauge
+query_analyzer_success_rate 1.0
+# HELP query_analyzer_cache_hit_rate Cache hit rate
+# TYPE query_analyzer_cache_hit_rate gauge
+query_analyzer_cache_hit_rate 0.0
+# HELP query_analyzer_processing_time_ms Query processing time in milliseconds
+# TYPE query_analyzer_processing_time_ms summary
+query_analyzer_processing_time_ms{quantile="0.5"} 24
+query_analyzer_processing_time_ms{quantile="0.95"} 198
+query_analyzer_processing_time_ms{quantile="0.99"} 198
+# HELP query_analyzer_llm_tokens Total LLM tokens used
+# TYPE query_analyzer_llm_tokens counter
+query_analyzer_llm_tokens{type="input"} 0
+query_analyzer_llm_tokens{type="output"} 0
+# HELP query_analyzer_llm_cost_usd Total LLM cost in USD
+# TYPE query_analyzer_llm_cost_usd counter
+query_analyzer_llm_cost_usd 0.0
