@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  agent-app:
+    build: .
+    container_name: ai-research-agent
+    ports:
+      - "8501:8501"
+    environment:
+      - CACHE_ENABLED=true
+      - CACHE_BACKEND=redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # Add your API keys here or in a .env file
+      # - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      # - GITHUB_TOKEN=${GITHUB_TOKEN}
+    depends_on:
+      - redis
+    networks:
+      - agent-network
+    volumes:
+      - .:/app  # Mount for development (hot reload)
+
+  redis:
+    image: redis:alpine
+    container_name: agent-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - agent-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  agent-network:
+    driver: bridge
+
+volumes:
+  redis-data:

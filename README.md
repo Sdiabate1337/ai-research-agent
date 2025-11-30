@@ -19,9 +19,45 @@ export REDIS_PORT="6379"
 
 # Run tests
 pytest tests/ -v
+```
 
-# Run the agent
-python test_graph.py
+## 🚀 Usage
+
+### Option 1: Web Interface (Recommended)
+
+Run the Streamlit app locally:
+```bash
+streamlit run app.py
+```
+Access the UI at `http://localhost:8501`.
+
+### Option 2: Docker (Production)
+
+Run the full stack (App + Redis) with Docker Compose:
+```bash
+docker-compose up --build
+```
+
+### Option 3: CLI (Legacy)
+
+Run the command-line interface:
+```bash
+python3 run_agent.py
+```
+
+## 🛠 Configuration
+
+Create a `.env` file in the root directory:
+
+```env
+# API Keys (Optional but recommended)
+OPENROUTER_API_KEY=your_key_here
+GITHUB_TOKEN=your_token_here
+
+# Caching (Defaults to memory if not set)
+CACHE_ENABLED=true
+CACHE_BACKEND=redis  # or memory
+REDIS_HOST=localhost
 ```
 
 ## 🏗️ Architecture

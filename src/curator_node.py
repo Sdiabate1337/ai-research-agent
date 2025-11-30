@@ -67,8 +67,9 @@ def curator_node(state: AgentState) -> Dict[str, Any]:
         raw_score = p.get('relevance_score', 0.8) if isinstance(p, dict) else getattr(p, 'relevance_score', 0.8)
         if raw_score > 1.0:
             raw_score = raw_score / 100.0  # Normalize if 0-100
-        # Scale to 0.7-0.95 to give other sources a chance
-        score = 0.7 + (raw_score * 0.25)
+        # Scale to 0.5-0.85 to allow other sources to compete
+        # (Docs are 0.85, High-star repos can go up to 0.95)
+        score = 0.5 + (raw_score * 0.35)
         
         if isinstance(p, dict):
             title = p['title']
@@ -144,8 +145,34 @@ def curator_node(state: AgentState) -> Dict[str, Any]:
     # Sort by score (desc)
     ranked_results.sort(key=lambda x: x.relevance_score, reverse=True)
     
-    # Limit to top 20
-    ranked_results = ranked_results[:20]
+    # Diversity Guarantee: Ensure we have at least 2 results from each category if available
+    final_selection = []
+    categories = ["paper", "repository", "documentation", "discussion"]
+    selected_indices = set()
+    
+    # 1. Pick top 2 from each category
+    for cat in categories:
+        count = 0
+        for i, res in enumerate(ranked_results):
+            if res.type == cat and i not in selected_indices:
+                final_selection.append(res)
+                selected_indices.add(i)
+                count += 1
+                if count >= 2:  # Guarantee 2 per category
+                    break
+    
+    # 2. Fill the rest up to 20 with highest scoring remaining
+    for i, res in enumerate(ranked_results):
+        if len(final_selection) >= 20:
+            break
+        if i not in selected_indices:
+            final_selection.append(res)
+            selected_indices.add(i)
+            
+    # Re-sort final selection by score for display
+    final_selection.sort(key=lambda x: x.relevance_score, reverse=True)
+    
+    ranked_results = final_selection
     
     print(f"✅ Curated {len(ranked_results)} unique results")
     if ranked_results:
