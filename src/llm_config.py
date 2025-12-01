@@ -9,64 +9,44 @@ load_dotenv()
 
 
 def get_llm(
-    model: str = "anthropic/claude-3.5-sonnet",
+    model: str = "gpt-4o-mini",  # OpenAI's affordable model
     temperature: float = 0,
     timeout: int = 10,
-    max_retries: int = 0  # We handle retries ourselves
+    max_retries: int = 0
 ):
     """
-    Crée une instance du LLM via OpenRouter.
-    
-    Pourquoi OpenRouter?
-    ===================
-    - Accès à plusieurs modèles (Claude, GPT-4, Llama, etc.)
-    - Un seul API key pour tous les modèles
-    - Souvent moins cher que les APIs directes
+    Create LLM instance using OpenAI API directly.
     
     Args:
-        model: Le modèle à utiliser (voir https://openrouter.ai/models)
-        temperature: Contrôle la créativité (0 = déterministe, 1 = créatif)
-        timeout: Timeout en secondes pour les requêtes
-        max_retries: Nombre de retries (0 = on gère nous-mêmes)
+        model: OpenAI model to use (gpt-4o-mini, gpt-4o, gpt-3.5-turbo)
+        temperature: Controls creativity (0 = deterministic, 1 = creative)
+        timeout: Timeout in seconds
+        max_retries: Number of retries
         
     Returns:
-        Instance ChatOpenAI configurée pour OpenRouter
-        
-    Explication des paramètres:
-    ==========================
-    - temperature=0: On veut des réponses consistantes et factuelles
-    - base_url: Point d'entrée de l'API OpenRouter
-    - api_key: Votre clé OpenRouter (à mettre dans .env)
-    - request_timeout: Timeout pour éviter les blocages
-    - max_retries=0: On implémente notre propre logique de retry
+        ChatOpenAI instance
     """
     
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("OPENAI_API_KEY")
     
     if not api_key:
         raise ValueError(
-            "OPENROUTER_API_KEY non trouvée! "
-            "Ajoutez-la dans votre fichier .env: OPENROUTER_API_KEY=your_key_here"
+            "OPENAI_API_KEY not found! "
+            "Add it to your .env file: OPENAI_API_KEY=sk-..."
         )
     
     return ChatOpenAI(
         model=model,
         temperature=temperature,
-        openai_api_base="https://openrouter.ai/api/v1",
         openai_api_key=api_key,
         request_timeout=timeout,
-        max_retries=max_retries,
-        # Headers optionnels mais recommandés
-        default_headers={
-            "HTTP-Referer": "https://github.com/your-username/ai-research-agent",
-            "X-Title": "AI Research Agent"
-        }
+        max_retries=max_retries
     )
 
 
 def get_llm_with_fallback(
-    primary_model: str = "anthropic/claude-3.5-sonnet",
-    fallback_model: str = "anthropic/claude-3-haiku",
+    primary_model: str = "gpt-4o-mini",
+    fallback_model: str = "gpt-3.5-turbo",
     temperature: float = 0,
     timeout: int = 10
 ):
@@ -86,8 +66,8 @@ def get_llm_with_fallback(
     - Cost optimization → Try fast model first
     
     Args:
-        primary_model: Main model to use
-        fallback_model: Backup model if primary fails
+        primary_model: Main OpenAI model (gpt-4o-mini)
+        fallback_model: Backup model (gpt-3.5-turbo)
         temperature: LLM temperature
         timeout: Request timeout
         

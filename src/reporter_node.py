@@ -119,14 +119,13 @@ def reporter_node(state: AgentState) -> Dict[str, Any]:
         
     except Exception as e:
         print(f"❌ Report Generation Error: {e}")
-        # Fallback: simple manual report
         return {
-            "key_insights": [{"text": "Error generating insights", "confidence": 0.0, "related_sources": []}],
+            "key_insights": [],
             "summary_by_category": {
-                "papers": "Error generating summary",
-                "repositories": "Error generating summary",
-                "documentation": "Error generating summary",
-                "discussions": "Error generating summary"
+                "papers": "LLM unavailable",
+                "repositories": "LLM unavailable",
+                "documentation": "LLM unavailable",
+                "discussions": "LLM unavailable"
             },
             "action_items": []
         }
