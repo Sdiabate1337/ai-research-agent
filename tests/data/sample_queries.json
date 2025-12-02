@@ -1,0 +1,82 @@
+{
+  "french_queries": [
+    {
+      "query": "Quoi de neuf dans LangGraph cette semaine?",
+      "expected_categories": ["repositories", "discussions", "documentation"],
+      "expected_topics": ["langgraph"],
+      "language": "french"
+    },
+    {
+      "query": "Comment implémenter la mémoire dans un agent IA?",
+      "expected_categories": ["documentation", "repositories", "discussions"],
+      "expected_topics": ["memory", "agent"],
+      "language": "french"
+    },
+    {
+      "query": "Articles de recherche sur les systèmes multi-agents",
+      "expected_categories": ["papers"],
+      "expected_topics": ["multi-agent", "systems"],
+      "language": "french"
+    }
+  ],
+  
+  "english_queries": [
+    {
+      "query": "What's new in LangGraph this week?",
+      "expected_categories": ["repositories", "discussions", "documentation"],
+      "expected_topics": ["langgraph"],
+      "language": "english"
+    },
+    {
+      "query": "Research papers on attention mechanisms",
+      "expected_categories": ["papers"],
+      "expected_topics": ["attention", "mechanisms"],
+      "language": "english"
+    },
+    {
+      "query": "Best practices for agent tool calling",
+      "expected_categories": ["documentation", "discussions"],
+      "expected_topics": ["agent", "tool", "calling"],
+      "language": "english"
+    }
+  ],
+  
+  "arabic_queries": [
+    {
+      "query": "ما الجديد في الذكاء الاصطناعي هذا الأسبوع؟",
+      "expected_categories": ["discussions", "repositories"],
+      "expected_topics": ["ai", "artificial intelligence"],
+      "language": "arabic"
+    },
+    {
+      "query": "كيفية بناء وكيل ذكي باستخدام LangGraph",
+      "expected_categories": ["documentation", "repositories"],
+      "expected_topics": ["langgraph", "agent"],
+      "language": "arabic"
+    }
+  ],
+  
+  "edge_cases": [
+    {
+      "query": "ai",
+      "expected_categories": ["papers", "repositories", "documentation", "discussions"],
+      "expected_topics": ["ai"],
+      "language": "english",
+      "description": "Very short query"
+    },
+    {
+      "query": "I want to learn everything about reinforcement learning, multi-agent systems, transformers, attention mechanisms, and how to build production-ready AI agents",
+      "expected_categories": ["papers", "repositories", "documentation"],
+      "expected_topics": ["reinforcement learning", "multi-agent", "transformers", "attention"],
+      "language": "english",
+      "description": "Very long, complex query"
+    },
+    {
+      "query": "🤖 AI agents 🚀",
+      "expected_categories": ["papers", "repositories", "documentation", "discussions"],
+      "expected_topics": ["ai", "agents"],
+      "language": "english",
+      "description": "Query with emojis"
+    }
+  ]
+}

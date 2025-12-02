@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-11-29T17:33:31.190749",
+  "uptime_seconds": 5.393553,
+  "metrics": {
+    "total_queries": 3,
+    "successful_queries": 3,
+    "failed_queries": 0,
+    "success_rate": 1.0,
+    "cache_hits": 0,
+    "cache_misses": 3,
+    "cache_hit_rate": 0.0,
+    "processing_time_ms": {
+      "avg": 79.33333333333333,
+      "min": 16,
+      "max": 198,
+      "p50": 24,
+      "p95": 198,
+      "p99": 198
+    },
+    "llm_usage": {
+      "total_calls": 3,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_cost_usd": 0.0
+    },
+    "errors": {},
+    "languages": {
+      "en": 3
+    }
+  }
+}
